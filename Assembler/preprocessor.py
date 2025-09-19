@@ -1,4 +1,5 @@
 import sys
+import re
 
 def directives(code: str) -> list[str]:
 	labels = {}
@@ -52,7 +53,10 @@ def preprocessor(code: str) -> str:
 		
 		i += 1
 
-	code = directives('\n'.join(code)).split('\n')
+	code = directives('\n'.join(code))
+	code = re.sub(r'(LDI|ADD|SUB|MUL|DIV|NEG|SHL|SHR|AND|OR|NAND|NOR|NOT|XOR|XNOR) (\w+), \[([0X]?\w+)\]', r'LDI RAM_PTR, \3\n\1 \2, RAM', code)
+	code = re.sub(r'(LDI|ADD|SUB|MUL|DIV|NEG|SHL|SHR|AND|OR|NAND|NOR|NOT|XOR|XNOR) \[([0X]?\w+)\], ([0X]?\w+)', r'LDI RAM_PTR, \2\n\1 RAM, \3', code)
+	code = code.split('\n')
 	
 	return code
 

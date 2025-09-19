@@ -162,9 +162,12 @@ def parse(instruction: str) -> int:
                         case 'RAM':     INSTRUCTION |= RAM_SRC
                         case 'IO':      INSTRUCTION |= IO_SRC
                 
-                if args[1].replace('-', '').isnumeric():
+                if args[1].replace('-', '').isnumeric() and not args[1].startswith('0X'):
                         INSTRUCTION |= X_SRC
-                        INSTRUCTION |= (int(args[1])) << 32
+                        INSTRUCTION |= int(args[1]) << 32
+                elif args[1].startswith('0X') and all(c in '0123456789ABCDEF' for c in args[1][2:]):
+                        INSTRUCTION |= X_SRC
+                        INSTRUCTION |= (int(args[1], 16)) << 32
         else:
                 match args[0]:
                         case 'A':       INSTRUCTION |= A_SRC

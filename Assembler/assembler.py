@@ -187,6 +187,9 @@ def parse(instruction: str) -> int:
                 if args[0].replace('-', '').isnumeric():
                         INSTRUCTION |= X_SRC
                         INSTRUCTION |= (int(args[0])) << 32
+                elif args[1].startswith('0X') and all(c in '0123456789ABCDEF' for c in args[1][2:]):
+                        INSTRUCTION |= X_SRC
+                        INSTRUCTION |= (int(args[1], 16)) << 32
 
         
         

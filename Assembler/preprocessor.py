@@ -62,10 +62,12 @@ def directives(code: str) -> list[str]:
 def macros(code: str) -> str:
 	code = re.sub(r'(LDI|ADD|SUB|MUL|DIV|NEG|SHL|SHR|AND|OR|NAND|NOR|NOT|XOR|XNOR) (\w+), \[([0X]?\w+)\]', r'LDI RAM_PTR, \3\n\1 \2, RAM', code)
 	code = re.sub(r'(LDI|ADD|SUB|MUL|DIV|NEG|SHL|SHR|AND|OR|NAND|NOR|NOT|XOR|XNOR) \[([0X]?\w+)\], ([0X]?\w+)', r'LDI RAM_PTR, \2\n\1 RAM, \3', code)
-	code = re.sub(r'\nSTACK_INIT\n', r'\nLDI SP, 0\n', code)
+	code = re.sub(r'STACK_INIT\n', r'LDI SP, 0\n', code)
 	code = re.sub(r'PUSH (\w+)', r'SUB SP, 1\nLDI RAM_PTR, SP\nLDI RAM, \1', code)
 	code = re.sub(r'POP (\w+)', r'LDI RAM_PTR, SP\nLDI \1, RAM\nADD SP, 1', code)
 	code = re.sub(r'\nPOP\n', r'\nADD SP, 1\n', code)
+	
+	return code
 
 def preprocessor(code: str) -> str:
 	code = code.split('\n')

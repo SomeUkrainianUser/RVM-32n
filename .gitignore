@@ -1,4 +1,6 @@
-test.rvm
+Code/
+test.d
 __pycache__/
 .vscode/
 *.pyc
+
